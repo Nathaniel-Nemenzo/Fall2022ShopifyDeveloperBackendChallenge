@@ -1,4 +1,6 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
 from models import db
 from inventory import inventory
 
@@ -10,7 +12,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Register inventory blueprint
 app.register_blueprint(inventory)
 
-# Initialize DB and create tables
+# Bind DB with application
 db.init_app(app)
 
 @app.before_first_request
@@ -19,5 +21,5 @@ def create_tables():
     db.drop_all()
     db.create_all()
 
-# Run app
-app.run(host = 'localhot', port = 5000)
+if __name__ == "__main__":
+    app.run(host = 'localhost', port = 5000)

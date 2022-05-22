@@ -1,0 +1,21 @@
+<table>
+    <tr>
+        <th>Inventory ID</th>
+        <th>Product Name</th>
+        <th>Product Description</th>
+        <th>Product Price</th>
+        <th>Product Quantity</th>
+        <th>Product Unit</th>
+
+    </tr>
+    {% for inventory in inventories %}
+    <TR>
+       <TD>{{inventory.id}}</TD>
+       <TD>{{inventory.product_name}}</TD>
+       <TD>{{inventory.product_description}}</TD>
+       <TD><SPAN>{{inventory.product_price}}</SPAN></TD>
+       <TD><SPAN>{{inventory.product_quantity}}</SPAN></TD>
+       <TD><SPAN>{{inventory.product_unit}}</SPAN></TD>
+    </TR>
+    {% endfor %}
+    </table>
