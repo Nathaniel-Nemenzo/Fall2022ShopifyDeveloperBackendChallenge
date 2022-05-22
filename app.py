@@ -21,5 +21,9 @@ def create_tables():
     db.drop_all()
     db.create_all()
 
+@app.route('/')
+def index():
+  return 'Inventory Tracking Software, look at endpoints in README.md to explore!'
+
 if __name__ == "__main__":
-    app.run(host = 'localhost', port = 5000)
+    app.run(debug=True, port='3000', host='0.0.0.0')
