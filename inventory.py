@@ -36,7 +36,7 @@ def create_inventory():
         inventory = Inventory(product_name, product_description, product_unit, product_price, product_quantity, other_details)
         if warehouses[0] != '':
             for warehouse in warehouses:
-                inventory.warehouses.extend(Warehouse.query.filter_by(id = warehouse).first())
+                inventory.warehouses.append(Warehouse.query.filter_by(id = warehouse).first())
                 
         db.session.add(inventory)
         db.session.commit()
