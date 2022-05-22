@@ -36,7 +36,7 @@ def create_inventory():
         inventory = Inventory(product_name, product_description, product_unit, product_price, product_quantity, other_details)
         if warehouses[0] != '':
             for warehouse in warehouses:
-                inventory.warehouses.extend(Warehouse.query.filter_by(id = warehouse).all())
+                inventory.warehouses.extend(Warehouse.query.filter_by(id = warehouse).first())
                 
         db.session.add(inventory)
         db.session.commit()
@@ -113,7 +113,8 @@ def create_warehouse():
 
         warehouse = Warehouse(warehouse_name, warehouse_description, warehouse_location, warehouse_status)
         if inventories[0] != '':
-            warehouse.inventories = inventories
+            for inventory in inventories:
+                warehouse.inventories.append(Inventory.query.filter_by(id = inventory).first())
 
         db.session.add(warehouse)
         db.session.commit()

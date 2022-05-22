@@ -8,3 +8,6 @@
 <p>{{warehouse.warehouse_location}}</p><hr>
 <h3>Warehouse Status</h3>
 <p>{{warehouse.warehouse_status}}</p><hr>
+{% for id in warehouse.inventories %}
+<p><span>{{ id }}</span></p>
+{% endfor %}
