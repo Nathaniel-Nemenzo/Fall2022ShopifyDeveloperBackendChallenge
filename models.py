@@ -32,6 +32,7 @@ class Inventory(db.Model):
         self.product_unit = product_unit
         self.product_price = product_price
         self.product_quantity = product_quantity
+        self.other_details = other_details
 
 class Warehouse(db.Model):
     __tablename__ = 'warehouse'
