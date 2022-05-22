@@ -42,3 +42,9 @@ class Warehouse(db.Model):
     warehouse_description = db.Column(db.String())
     warehouse_location = db.Column(db.String())
     warehouse_status = db.Column(db.Boolean)
+
+    def __init__(self, warehouse_name, warehouse_description, warehouse_location, warehouse_status):
+        self.warehouse_name = warehouse_name
+        self.warehouse_description = warehouse_description
+        self.warehouse_location = warehouse_location
+        self.warehouse_status = warehouse_status

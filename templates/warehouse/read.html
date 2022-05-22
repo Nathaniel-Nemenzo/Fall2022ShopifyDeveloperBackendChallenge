@@ -1,0 +1,18 @@
+<table>
+    <tr>
+        <th>Warehouse ID</th>
+        <th>Warehouse Name</th>
+        <th>Warehouse Description</th>
+        <th>Warehouse Location</th>
+        <th>Warehouse Status</th>
+    </tr>
+    {% for warehouse in warehouses %}
+    <TR>
+       <TD>{{warehouse.id}}</TD>
+       <TD>{{warehouse.warehouse_name}}</TD>
+       <TD>{{warehouse.warehouse_description}}</TD>
+       <TD><SPAN>{{warehouse.warehouse_location}}</SPAN></TD>
+       <TD><SPAN>{{warehouse.warehouse_status}}</SPAN></TD>
+    </TR>
+    {% endfor %}
+    </table>

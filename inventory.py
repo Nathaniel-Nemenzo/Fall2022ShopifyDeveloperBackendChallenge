@@ -30,7 +30,7 @@ def read_inventory():
     inventories = Inventory.query.all()
     return render_template('inventory/read.html', inventories = inventories)
 
-@inventory.route('/inventory/<int:id>')
+@inventory.route('/inventory/<int:id>', methods = ['GET'])
 def read_single_inventory(id):
     inventory = Inventory.query.filter_by(id = id).first()
     if inventory:
@@ -73,16 +73,58 @@ def delete_inventory(id):
 # Warehouse Endpoints
 @inventory.route('/warehouse/create', methods = ['GET', 'POST'])
 def create_warehouse():
-    return 'Warehouse Create'
+    if request.method == 'GET':
+        return render_template('warehouse/create.html')
+
+    if request.method == 'POST':
+        warehouse_name = request.form['warehouse_name']
+        warehouse_description = request.form['warehouse_description']
+        warehouse_location = request.form['warehouse_location']
+        warehouse_status = True if request.form.get('warehouse_status', '') else False
+
+        warehouse = Warehouse(warehouse_name, warehouse_description, warehouse_location, warehouse_status)
+        db.session.add(warehouse)
+        db.session.commit()
+        return redirect('/warehouse')
 
 @inventory.route('/warehouse', methods = ['GET'])
 def read_warehouse():
-    return 'Warehouse Read'
+    warehouses = Warehouse.query.all()
+    return render_template('warehouse/read.html', warehouses = warehouses)
+
+@inventory.route('/warehouse/<int:id>', methods = ['GET'])
+def read_single_warehouse(id):
+    warehouse = Warehouse.query.filter_by(id = id).first()
+    if warehouse:
+        return render_template('warehouse/read_single.html', warehouse = warehouse)
+    return f'Warehouse with id {id} does not exist.'
 
 @inventory.route('/warehouse/<int:id>/update', methods = ['GET', 'POST'])
 def update_warehouse(id):
-    return 'Warehouse Update'
+    warehouse = Warehouse.query.filter_by(id = id).first()
+    if request.method == 'POST':
+        if warehouse:
+            db.session.delete(warehouse)
+            db.session.commit()
+
+        warehouse_name = request.form['warehouse_name']
+        warehouse_description = request.form['warehouse_description']
+        warehouse_location = request.form['warehouse_location']
+        warehouse_status = True if request.form.get('warehouse_status', '') else False
+        warehouse = Warehouse(warehouse_name, warehouse_description, warehouse_location, warehouse_status)
+       
+        db.session.add(warehouse)
+        db.session.commit()
+        return redirect(f'/warehouse/{id}')
+    return render_template('warehouse/update.html', warehouse = warehouse)
 
 @inventory.route('/warehouse/<int:id>/delete', methods = ['GET', 'POST'])
 def delete_warehouse(id):
-    return 'Warehouse Delete'
+    warehouse = Warehouse.query.filter_by(id = id).first()
+    if request.method == 'POST':
+        if warehouse:
+            db.session.delete(warehouse)
+            db.session.commit()
+            return redirect('/warehouse')
+        abort(404)
+    return render_template('warehouse/delete.html')
