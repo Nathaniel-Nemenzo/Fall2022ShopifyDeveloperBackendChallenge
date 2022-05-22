@@ -12,3 +12,7 @@
 <p>{{inventory.product_quantity}}</p><hr>
 <h3>Other Details</h3>
 <p>{{inventory.other_details}}</p><hr>
+<h3>Warehouses</h3>
+{% for id in inventory.warehouses %}
+<p><span>{{ id }}</span></p>
+{% endfor %}

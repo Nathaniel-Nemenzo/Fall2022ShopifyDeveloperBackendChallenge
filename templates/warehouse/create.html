@@ -3,5 +3,14 @@
     <p>Warehouse Description <input type = "text" name = "warehouse_description" /></p>
     <p>Warehouse Location <input type = "text" name = "warehouse_location" /></p>
     <p>Warehouse Status <input type = "checkbox" name = "warehouse_status" /></p>
+
+    <!-- show inventory information -->
+    <h4>Available Inventory IDs</h4>
+    {% for inventory in inventories %}
+      <p><span>{{ inventory.id }}</span></p>
+    {% endfor %}
+
+    <!-- allow inventory allocation -->
+    <p>Inventory Allocation (id separated by commas): <input type = "text" name = "inventory_allocation" /></p>
     <p><input type = "submit" value = "Submit" /></p>
-  </form>
+</form>

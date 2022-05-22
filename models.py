@@ -24,7 +24,7 @@ class Inventory(db.Model):
     product_quantity = db.Column(db.Integer)
     other_details = db.Column(db.String())
 
-    allocations = db.relationship('Warehouse', secondary = allocations, backref = db.backref('inventory'))
+    warehouses = db.relationship('Warehouse', secondary = allocations, backref = db.backref('inventories'))
 
     def __init__(self, product_name, product_description, product_unit, product_price, product_quantity, other_details):
         self.product_name = product_name

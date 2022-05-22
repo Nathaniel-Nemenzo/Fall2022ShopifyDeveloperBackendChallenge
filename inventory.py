@@ -11,7 +11,8 @@ inventory = Blueprint('inventory', __name__)
 @inventory.route('/inventory/create', methods = ['GET', 'POST'])
 def create_inventory():
     if request.method == 'GET':
-        return render_template('inventory/create.html')
+        warehouses = Warehouse.query.all()
+        return render_template('inventory/create.html', warehouses = warehouses)
 
     if request.method == 'POST':
         product_name = request.form['product_name']
@@ -20,7 +21,23 @@ def create_inventory():
         product_price = request.form['product_price']
         product_quantity = request.form['product_quantity']
         other_details = request.form['other_details']
+
+        # Parse the warehouses
+        warehouses = request.form['warehouse_allocation']
+        warehouses = warehouses.split(',')
+
+        # Make sure all the warehouses are present
+        if warehouses[0] != '':
+            for warehouse in warehouses:
+                if not Warehouse.query.filter_by(id = warehouse).first():
+                    return f'Warehouse ID does not exist.'
+
+        # Add the warehouses to inventory
         inventory = Inventory(product_name, product_description, product_unit, product_price, product_quantity, other_details)
+        if warehouses[0] != '':
+            for warehouse in warehouses:
+                inventory.warehouses.extend(Warehouse.query.filter_by(id = warehouse).all())
+                
         db.session.add(inventory)
         db.session.commit()
         return redirect('/inventory')
@@ -51,6 +68,7 @@ def update_inventory(id):
             product_price = request.form['product_price']
             product_quantity = request.form['product_quantity']
             other_details = request.form['other_details']
+
             inventory = Inventory(product_name, product_description, product_unit, product_price, product_quantity, other_details)
 
             db.session.add(inventory)
@@ -74,7 +92,8 @@ def delete_inventory(id):
 @inventory.route('/warehouse/create', methods = ['GET', 'POST'])
 def create_warehouse():
     if request.method == 'GET':
-        return render_template('warehouse/create.html')
+        inventories = Inventory.query.all()
+        return render_template('warehouse/create.html', inventories = inventories)
 
     if request.method == 'POST':
         warehouse_name = request.form['warehouse_name']
@@ -82,7 +101,20 @@ def create_warehouse():
         warehouse_location = request.form['warehouse_location']
         warehouse_status = True if request.form.get('warehouse_status', '') else False
 
+        # Parse the inventories
+        inventories = request.form['inventory_allocation']
+        inventories = inventories.split(',')
+
+        # Make sure all the warehouses are present
+        if inventories[0] != '':
+            for inventory in inventories:
+                if not Inventory.query.filter_by(id = inventory).first():
+                    return f'Inventory ID does not exist.'
+
         warehouse = Warehouse(warehouse_name, warehouse_description, warehouse_location, warehouse_status)
+        if inventories[0] != '':
+            warehouse.inventories = inventories
+
         db.session.add(warehouse)
         db.session.commit()
         return redirect('/warehouse')
